@@ -446,5 +446,11 @@
                 ]
             }
         }
-    ]
+    ],
+   "outputs": {
+      "WebAppUrl": {
+        "type": "string",
+        "value": "[variables('webAppName')]"
+      } 
+}
 }
