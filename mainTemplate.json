@@ -43,18 +43,7 @@
     "tempguid": "[concat(substring(variables('z'), 0, 8), '-', substring(variables('z'), 9, 4), '-', substring(variables('z'), 14, 4), '-', substring(variables('z'), 19, 4), '-', substring(variables('z'), 24, 12))]"
     },
     "resources": [
-       
-        {   
-            "apiVersion": "2019-05-01",
-            "name": "[variables('tempguid')]", 
-            "type": "Microsoft.Resources/deployments" ,
-            "properties":{
-                "mode":"Incremental",
-                "templateLink": {
-                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                "contentVersion": "1.0.0.0",
-                "resources":[
-                     {
+        {
             "type": "Microsoft.ServiceBus/namespaces",
             "apiVersion": "[variables('sbVersion')]",
             "name": "[variables('serviceBus')]",
@@ -66,7 +55,12 @@
             },
             "properties": {}
         },
-          {
+        {   
+            "apiVersion": "2019-05-01",
+            "name": "[variables('tempguid')]", 
+            "type": "Microsoft.Resources/deployments" 
+        },
+        {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
             "name": "[variables('logicAppName')]",
@@ -448,10 +442,5 @@
                 ]
             }
         }
-                ]
-                }
-            }
-        }
-      
     ]
 }
