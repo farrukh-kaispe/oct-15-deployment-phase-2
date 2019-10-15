@@ -14,7 +14,6 @@
         "AuthRules_sb_queue": "AuthRules_sb_queue",
         "serviceBusQueue_endpoint": "serviceBusQueue_endpoint",
         "queueAuthorizationRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', variables('serviceBus'), variables('serviceBusQueue'), variables('AuthRules_sb_queue'))]",
-        "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
         "consumerGroupName": "streamingJobs",
         "logicAppName": "[concat('logicApp', uniqueString(resourceGroup().id))]",
         "uniqueBase": "[toLower(uniqueString('0', resourceGroup().id, deployment().name))]",
