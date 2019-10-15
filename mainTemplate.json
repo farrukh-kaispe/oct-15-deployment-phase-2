@@ -171,10 +171,7 @@
                                 "name": "[variables('serviceBusQueue_endpoint')]",
                                 "resourceGroup": "[resourceGroup().Name]"
                             }
-                        ],
-                        "serviceBusTopics": [],
-                        "eventHubs": [],
-                        "storageContainers": []
+                        ]
                     },
                     "routes": [
                         {
