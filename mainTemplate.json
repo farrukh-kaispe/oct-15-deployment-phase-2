@@ -450,7 +450,7 @@
    "outputs": {
       "WebAppUrl": {
         "type": "string",
-        "value": "[variables('webAppName')]"
+        "value": "[concat('https://',variables('webAppName'),'.azurewebsites.net')]"
       } 
 }
 }
