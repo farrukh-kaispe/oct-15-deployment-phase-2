@@ -279,7 +279,7 @@
                         }
                     },
                     {
-                        "name": "referenceInput2",
+                        "name": "Devices",
                         "properties": {
                             "datasource": {
                                 "properties": {
@@ -304,7 +304,7 @@
                         }
                     },
                     {
-                        "name": "referenceInput",
+                        "name": "Rules",
                         "properties": {
                             "datasource": {
                                 "properties": {
@@ -367,7 +367,22 @@
                     "name": "Transformation",
                     "properties": {
                         "streamingUnits": 3,
-                        "query": "With [telemetryandRules] as (SELECT T,G2,telemetry,Fields,Fields2,G FROM iotHubInput T Join referenceInput2 G on G.Id=T.IotHub.ConnectionDeviceId Join referenceInput G2 on G2.deviceGroup=G.GroupId Cross Apply GetArrayElements(G2.RuleSets) as Fields Cross Apply GetRecordProperties(Fields.ArrayValue) as Fields2 Cross Apply GetRecordProperties(T) as telemetry Where telemetry.PropertyName=Try_Cast(Fields2.PropertyValue as nvarchar(max))     and (fields.arrayvalue.operator !=null or (fields.arrayvalue.operator ='>' and try_cast(telemetry.PropertyValue as float)>Fields.ArrayValue.Value) or (fields.arrayvalue.operator ='<' and try_cast(telemetry.PropertyValue as float)<Fields.ArrayValue.Value) or (fields.arrayvalue.operator ='<=' and try_cast(telemetry.PropertyValue as float)<=Fields.ArrayValue.Value) or (fields.arrayvalue.operator ='>=' and try_cast(telemetry.PropertyValue as float)>=Fields.ArrayValue.Value) or (fields.arrayvalue.operator ='==' and try_cast(telemetry.PropertyValue as float)=Fields.ArrayValue.Value) ) ) SELECT G.Id,G2.Name,T INTO outputBlob FROM [telemetryandRules] Group By T,G2,G,tumblingwindow(minute,1)   Having count(T)=G2.SetCount"
+                        "query": "With [telemetryandRules] as 
+                                (SELECT T,R,telemetry,Fields,Fields2,D FROM iotHubInput T 
+                                Join Devices D on D.Id=T.IotHub.ConnectionDeviceId 
+                                Join Rules R on R.deviceGroup=D.GroupId 
+                                Cross Apply GetArrayElements(R.RuleSets) as Fields 
+                                Cross Apply GetRecordProperties(Fields.ArrayValue) as Fields2 
+                                Cross Apply GetRecordProperties(T) as telemetry 
+                                Where telemetry.PropertyName=Try_Cast(Fields2.PropertyValue as nvarchar(max)) 
+                                and (fields.arrayvalue.operator !=null  
+                                or (fields.arrayvalue.operator ='>' and try_cast(telemetry.PropertyValue as float)>Fields.ArrayValue.Value) 
+                                or (fields.arrayvalue.operator ='<' and try_cast(telemetry.PropertyValue as float)<Fields.ArrayValue.Value)
+                                or (fields.arrayvalue.operator ='<=' and try_cast(telemetry.PropertyValue as float)<=Fields.ArrayValue.Value)
+                                or (fields.arrayvalue.operator ='>=' and try_cast(telemetry.PropertyValue as float)>=Fields.ArrayValue.Value)
+                                or (fields.arrayvalue.operator ='==' and try_cast(telemetry.PropertyValue as float)=Fields.ArrayValue.Value) ) )
+                                SELECT D.Id,R.Name,T INTO outputBlob FROM [telemetryandRules] Group By T,R,D,tumblingwindow(minute,1)
+                                Having count(T)=R.SetCount"
                     }
                 }
             }
